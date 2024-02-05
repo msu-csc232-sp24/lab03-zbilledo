@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16.3-3.24.2)
-project(lab)
+project(lab03)
 
 if (CMAKE_VERSION GREATER_EQUAL "3.24.0")
     cmake_policy(SET CMP0135 NEW)

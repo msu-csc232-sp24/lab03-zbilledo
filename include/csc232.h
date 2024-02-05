@@ -1,6 +1,6 @@
 /**
  * CSC232 - Data Structures
- * Missouri State University, Fall 2021
+ * Missouri State University, Spring 2024
  *
  * @file    csc232.h
  * @author  Jim Daehn <jdaehn@missouristate.edu>
@@ -18,9 +18,9 @@
 #define TRUE 1
 #define EXECUTE_BLOCK FALSE
 
-#define FINISHED_PART_1 TRUE
-#define FINISHED_PART_2 TRUE
-#define FINISHED_PART_3 TRUE
+#define FINISHED_PART_1 FALSE
+#define FINISHED_PART_2 FALSE
+#define FINISHED_PART_3 FALSE
 
 #include <algorithm>
 #include <cassert>
@@ -60,9 +60,39 @@ using std::setw;
  */
 namespace csc232
 {
-    // Add any user-defined functions prescribed in your assignment below
+#if FINISHED_PART_1
+    // TODO: Task 1 - Declare your Dog interface below (but before the #endif)
+
+#endif // FINISHED_PART_1
+
+#if FINISHED_PART_2
+    // TODO: Task 2.a.1 - Declare your Yorkie class for Task 2a below
+
+    // TODO: Task 2.a.2 - Add your Yorkie definition below
+
+    // TODO: Task 2.b.1 - Declare your GreatDaehn class for Task 2b below
+
+    // TODO: Task 2.b.2 - Add your GreatDaehn definition below (before the #endif)
+
+#endif // FINISHED_PART_2
 
     // DO NOT Modify anything below this line
+
+    /**
+     * @brief A string utility function that determines if some string ends with some other string.
+     * @param main_str the string potentially end with to_match
+     * @param to_match a substring sought at the end of main_str
+     * @return true if main_str ends with to_match, false otherwise.
+     */
+    bool StringEndsWith ( const std::string& main_str, const std::string& to_match )
+    {
+        auto it = to_match.begin( );
+        return main_str.size( ) >= to_match.size( ) &&
+               std::all_of( std::next( main_str.begin( ), main_str.size( ) - to_match.size( ) ), main_str.end( ),
+                            [ &it ] ( const char& c ) {
+                                return c == *( it++ );
+                            } );
+    }
 } // namespace csc232
 
 #endif // CSC232_COMMON_H_

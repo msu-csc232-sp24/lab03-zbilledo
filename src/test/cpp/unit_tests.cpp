@@ -1,6 +1,6 @@
 /**
  * CSC232 - Data Structures
- * Missouri State University, Fall 2021
+ * Missouri State University, Spring 2024
  *
  * @file    csc232.h
  * @author  Jim Daehn <jdaehn@missouristate.edu>
@@ -60,25 +60,25 @@ SCENARIO("Capturing standard output in a test", "[capture]")
 #endif
 
 #if FINISHED_PART_1
-SCENARIO("Evaluate Code for Task 1", "[task1]") {
-    GIVEN("Some pre-conditions") {
-        // declare any objects needed to satisfy preconditions
+using csc232::Dog;
 
-        WHEN("Some stimulus occurs") {
-            // invoke said stimulus
+enum DogsIndex
+{
+    YORKIE, FIRST_GREAT_DAEHN, SECOND_GREAT_DAEHN
+};
 
-            THEN("Validate any post-conditions") {
-                REQUIRE(true == true);
-            }
-        }
-    }
+SCENARIO( "Evaluate Code for Task 1: The Dog interface exists", "[task1]" )
+{
+    Dog* dogs[] = { nullptr, nullptr, nullptr };
 
-    GIVEN("Another set of pre-conditions") {
-        // declare objects needed for this different set of preconditions
-
-        WHEN("Some other stimulus occurs") {
-            THEN("Validate any new post-conditions") {
-                REQUIRE(true == true);
+    GIVEN( "A pointer to a Dog" )
+    {
+        REQUIRE( dogs[ YORKIE ] == nullptr );
+        WHEN( "This code compiles" )
+        {
+            THEN( "No errors are generated." )
+            {
+                REQUIRE( true );
             }
         }
     }
@@ -103,25 +103,85 @@ SCENARIO("Bootstrap - If you see this, you haven't done anything yet!", "[bootst
 #endif
 
 #if FINISHED_PART_2
-SCENARIO("Evaluate Code for Task 2", "[task2]") {
-    GIVEN("Some pre-conditions") {
-        // declare any objects needed to satisfy preconditions
+SCENARIO("Evaluate Code for Task 2: Dog Implementations exist", "[task2]") {
+    using csc232::Yorkie;
+    using csc232::GreatDaehn;
 
-        WHEN("Some stimulus occurs") {
-            // invoke said stimulus
+    // This can be an ofstream as well or any other ostream
+    std::stringstream buffer;
+    // Save cout's buffer here
+    std::streambuf* sbuf = std::cout.rdbuf( );
+    // Redirect cout to our stringstream buffer or any other ostream
+    std::cout.rdbuf( buffer.rdbuf( ) );
 
-            THEN("Validate any post-conditions") {
-                REQUIRE(true == true);
+    const static std::string YORKIE_RESPONSE { "DID YOU SAY SPEAK?" };
+    const static std::string GREAT_DAEHN_RESPONSE { "What?" };
+
+    GIVEN( "A a collection of Dog pointers" )
+    {
+        Dog* dogs[] = { new Yorkie { "snickers" }, new GreatDaehn { "sugar" }, new GreatDaehn { "spice" } };
+
+        WHEN( "I ask a Yorkie to speak" )
+        {
+            std::string response { dogs[ YORKIE ]->speak( ) };
+
+            THEN( "I expect a loud response" )
+            {
+                REQUIRE( response == YORKIE_RESPONSE );
+                std::cout.rdbuf( sbuf );
             }
         }
-    }
 
-    GIVEN("Another set of pre-conditions") {
-        // declare objects needed for this different set of preconditions
+        WHEN( "I ask a GreatDaehn to speak" )
+        {
+            std::string response { dogs[ FIRST_GREAT_DAEHN ]->speak( ) };
 
-        WHEN("Some other stimulus occurs") {
-            THEN("Validate any new post-conditions") {
-                REQUIRE(true == true);
+            THEN( "I expect a clueless response" )
+            {
+                REQUIRE( response == GREAT_DAEHN_RESPONSE );
+                std::cout.rdbuf( sbuf );
+            }
+        }
+
+        WHEN( "I as a Yorkie to sit" )
+        {
+            dogs[ YORKIE ]->sit( );
+
+            THEN( "I expect the Yorkie has been shown to be seated" )
+            {
+                std::string current_output { buffer.str( ) };
+                std::string latest_output { "A Yorkie named snickers just sat down.\n" };
+                bool ends_with { csc232::StringEndsWith( current_output, latest_output ) };
+                REQUIRE( ends_with );
+                std::cout.rdbuf( sbuf );
+            }
+        }
+
+        WHEN( "I as the first GreatDaehn to sit" )
+        {
+            dogs[ FIRST_GREAT_DAEHN ]->sit( );
+
+            THEN( "I expect the first GreatDaehn has been shown to be seated" )
+            {
+                std::string current_output { buffer.str( ) };
+                std::string latest_output { "A GreatDaehn named sugar just sat down.\n" };
+                bool ends_with { csc232::StringEndsWith( current_output, latest_output ) };
+                REQUIRE( ends_with );
+                std::cout.rdbuf( sbuf );
+            }
+        }
+
+        WHEN( "I as the second GreatDaehn to sit" )
+        {
+            dogs[ SECOND_GREAT_DAEHN ]->sit( );
+
+            THEN( "I expect the second GreatDaehn has been shown to be seated" )
+            {
+                std::string current_output { buffer.str( ) };
+                std::string latest_output { "A GreatDaehn named spice just sat down.\n" };
+                bool ends_with { csc232::StringEndsWith( current_output, latest_output ) };
+                REQUIRE( ends_with );
+                std::cout.rdbuf( sbuf );
             }
         }
     }
@@ -129,25 +189,20 @@ SCENARIO("Evaluate Code for Task 2", "[task2]") {
 #endif
 
 #if FINISHED_PART_3
-SCENARIO("Evaluate Code for Task 3", "[task3]") {
-    GIVEN("Some pre-conditions") {
-        // declare any objects needed to satisfy preconditions
+SCENARIO("Evaluate Code for Task 3: Demonstrate Polymorphism", "[task3]") {
+    GIVEN( "A collection of Dog pointers" )
+    {
+        std::vector<csc232::Dog*> dogs { new csc232::Yorkie { "snickers" }, new csc232::GreatDaehn { "sugar" } };
 
-        WHEN("Some stimulus occurs") {
-            // invoke said stimulus
+        WHEN( "I compare responses to the same message" )
+        {
+            std::string yorkie_response { dogs.at( YORKIE )->speak( ) };
+            std::string great_daehn_response { dogs.at( FIRST_GREAT_DAEHN )->speak( ) };
+            int comparison { yorkie_response.compare( great_daehn_response ) };
 
-            THEN("Validate any post-conditions") {
-                REQUIRE(true == true);
-            }
-        }
-    }
-
-    GIVEN("Another set of pre-conditions") {
-        // declare objects needed for this different set of preconditions
-
-        WHEN("Some other stimulus occurs") {
-            THEN("Validate any new post-conditions") {
-                REQUIRE(true == true);
+            THEN("They're found to be different")
+            {
+                REQUIRE_FALSE( comparison == 0);
             }
         }
     }
