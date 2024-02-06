@@ -19,8 +19,8 @@
 #define EXECUTE_BLOCK FALSE
 
 #define FINISHED_PART_1 TRUE
-#define FINISHED_PART_2 FALSE
-#define FINISHED_PART_3 FALSE
+#define FINISHED_PART_2 TRUE
+#define FINISHED_PART_3 TRUE
 
 #include <algorithm>
 #include <cassert>
@@ -73,13 +73,53 @@ public:
 
 #if FINISHED_PART_2
     // TODO: Task 2.a.1 - Declare your Yorkie class for Task 2a below
-
+class Yorkie : public Dog
+{
+public:
+    Yorkie(const std::string& dogs_name);
+    std::string speak() const override;
+    void sit() const override;
+private:
+    std::string name;
+};
     // TODO: Task 2.a.2 - Add your Yorkie definition below
-
+Yorkie::Yorkie(const std::string& dogs_name) : name{ dogs_name }
+{
+    std::cout<< "A Yorkie named " << name << " was just created." << std::endl;
+}
+std::string Yorkie::speak() const
+{
+    std::string response{ "DID YOU SAY SPEAK?" };
+    return response;
+}
+void Yorkie::sit() const
+{
+    std::cout << "A Yorkie named " << name << " just sat down." << std::endl;
+}
     // TODO: Task 2.b.1 - Declare your GreatDaehn class for Task 2b below
-
+class GreatDaehn: public Dog
+{
+public:
+    GreatDaehn(const std::string& dogs_name);
+    std::string speak() const override;
+    void sit() const override;
+private:
+    std::string name;
+};
     // TODO: Task 2.b.2 - Add your GreatDaehn definition below (before the #endif)
-
+GreatDaehn::GreatDaehn(const std::string& dogs_name) : name{ dogs_name }
+{
+    std::cout<< "A GreatDaehn named " << name << " was just created." << std::endl;
+}
+std::string GreatDaehn::speak() const
+{
+    std::string response{ "What?" };
+    return response;
+}
+void GreatDaehn::sit() const
+{
+    std::cout << "A GreatDaehn named " << name << " just sat down." << std::endl;
+}
 #endif // FINISHED_PART_2
 
     // DO NOT Modify anything below this line
